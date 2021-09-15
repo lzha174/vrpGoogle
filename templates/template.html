@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ context.title }}</title>
+    <style>
+      #map-canvas {
+        height: 600px;
+        width: 100%
+      }
+
+    </style>
+</head>
+<body>
+<div id="map-canvas"></div>
+<p>Each vehicle can travel no more than 30km per trip. There are four vehicles for dispatch. Optimal solution shows two vehicles are needed to visit all sites and come back</p>
+<script>
+    var map;
+    function showMap() {
+      var path = [{{ routes[1] }}];
+      var center = new google.maps.LatLng({{ mymap.center[0] }}, {{ mymap.center[1]  }});
+      var zoom = {{ mymap.zoom }};
+       map = new google.maps.Map(document.getElementById("map-canvas"), {
+          center: center,
+          zoom: zoom,
+          mapTypeId: 'terrain'
+      });
+      {% for route in routes %}
+        path = [{{route}}]
+        var activity_route = new google.maps.Polyline({
+          path: path,
+          geodesic: true,
+          strokeColor: '#550fFF',
+          strokeOpacity: 1.0,
+          strokeWeight: 3,
+          map: map
+      });
+        for (let p =0; p < path.length - 1; p++){
+            index = p.toString()
+              var start = new google.maps.Marker({
+                position: path[p],
+                map: map,
+                label: index,
+                fillColor:'green'
+              });
+        }
+      {% endfor %}
+
+
+    }
+
+</script>
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key={{ context.key }}&v=3.31&use_slippy=true&callback=showMap">
+</script>
+<table class="table" style="float: left;">
+    <tr>
+        <th class="center-align">Locations</th>
+    </tr>
+    {% for address in context.addresses %}
+    <tr>
+
+        <th class="center-align">{{ address}}</th>
+
+    </tr>
+    {% endfor %}
+</table>
+<table class="table" style="float: left;">
+    <tr>
+      <th class="center-align">Routes</th>
+    </tr>
+    {% for names in context.routeNames %}
+    <tr>
+
+        <th class="center-align">{{ names}}</th>
+
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
