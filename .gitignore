@@ -6,3 +6,8 @@
 .idea/inspectionProfiles/Project_Default.xml
 .idea/inspectionProfiles/profiles_settings.xml
 venv/
+.gcloudignore
+.idea/.name
+__pycache__/createRoute.cpython-39.pyc
+__pycache__/data.cpython-39.pyc
+__pycache__/vrp.cpython-39.pyc
